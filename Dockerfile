@@ -1,10 +1,14 @@
+#!/bin/bash
 FROM jarvice/ubuntu-ibm-mldl-ppc64le
+FROM python:2.7
 
 #add Jupyter
 RUN pip install notebook pyyaml
 
 #add startupscripts
+RUN apt-get update && apt-get install -y --no-install-recommends apt-utils
 RUN apt-get install -y supervisor
+
 WORKDIR /root
 ADD startjupyter.sh /root/ 
 ADD startdigits.sh  /root/
@@ -16,7 +20,7 @@ ADD rc.local /etc/rc.local
 WORKDIR /opt/DL/torch/examples
 RUN git clone https://github.com/facebook/iTorch.git
 WORKDIR iTorch
-RUN /bin/bash -c "source /opt/DL/torch/bin/torch-activate && luarocks make"
+#RUN /bin/bash -c "source /opt/DL/torch/bin/torch-activate && luarocks make"
 
 #add tensorflow examples 
 WORKDIR /opt/DL/tensorflow
